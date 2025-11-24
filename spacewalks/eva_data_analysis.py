@@ -78,7 +78,7 @@ def add_duration_hours(df):
         df (pd.DataFrame): The input dataframe.
 
     Returns:
-        df_copy (pd.DataFrame): A copy of df_ with the new duration_hours variable added
+        df_copy (pd.DataFrame): A copy of df with the new duration_hours variable added
     """
     df_copy = df.copy()
     df_copy["duration_hours"] = df_copy["duration"].apply(
