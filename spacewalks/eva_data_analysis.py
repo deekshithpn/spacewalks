@@ -56,6 +56,7 @@ def write_dataframe_to_csv(df, output_file):
     # Save dataframe to CSV file for later analysis
     df.to_csv(output_file, index=False, encoding='utf-8')
 
+
 def plot_cumulative_time_in_space(df, graph_file):
     """
     Plot the cumulative time spent in space over years.
