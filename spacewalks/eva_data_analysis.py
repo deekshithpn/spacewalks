@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import sys
 
-# https://data.nasa.gov/resource/eva.json (with modifications)
 
 def main(input_file, output_file, graph_file):
     print("--START--")
@@ -20,6 +19,7 @@ def main(input_file, output_file, graph_file):
     plot_cumulative_time_in_space(eva_data, graph_file)
 
     print("--END--")
+
 
 def read_json_to_dataframe(input_file):
     """
@@ -47,13 +47,42 @@ def write_dataframe_to_csv(df, output_file):
 
     Args:
         df (pd.DataFrame): The input dataframe.
-        output_file (str): The path to the output CSV file.
+        output_file (file or str): The file object or path to the output CSV file.
 
     Returns:
-        (None):
+        None
     """
     print(f'Saving to CSV file {output_file}')
-    df.to_csv(output_file, index=False)
+    # Save dataframe to CSV file for later analysis
+    df.to_csv(output_file, index=False, encoding='utf-8')
+
+
+def plot_cumulative_time_in_space(df, graph_file):
+    """
+    Plot the cumulative time spent in space over years.
+
+    Convert the duration column from strings to number of hours
+    Calculate cumulative sum of durations
+    Generate a plot of cumulative time spent in space over years and
+    save it to the specified location
+
+    Args:
+        df (pd.DataFrame): The input dataframe.
+        graph_file (file or str): The file object or path to the output graph file.
+
+    Returns:
+        None
+    """
+    print(f'Plotting cumulative spacewalk duration and saving to {graph_file}')
+    df = add_duration_hours(df)
+    df['cumulative_time'] = df['duration_hours'].cumsum()
+    plt.plot(df['date'], df['cumulative_time'], 'ko-')
+    plt.xlabel('Year')
+    plt.ylabel('Total time spent in space to date (hours)')
+    plt.tight_layout()
+    plt.savefig(graph_file)
+    plt.show()
+
 
 def text_to_duration(duration):
     """
@@ -87,33 +116,6 @@ def add_duration_hours(df):
     return df_copy
 
 
-def plot_cumulative_time_in_space(df, graph_file):
-    """
-    Plot the cumulative time spent in space over years
-
-    Convert the duration column from strings to number of hours
-    Calculate cumulative sum of durations
-    Generate a plot of cumulative time spent in space over years and
-    save it to the specified location
-
-    Args:
-        df (pd.DataFrame): The input dataframe.
-        graph_file (str): The path to the output graph file.
-
-    Returns:
-        (None):
-    """
-    print(f'Plotting cumulative spacewalk duration and saving to {graph_file}')
-    df = add_duration_hours(df)
-    df['cumulative_time'] = df['duration_hours'].cumsum()
-    plt.plot(df.date, df.cumulative_time, 'ko-')
-    plt.xlabel('Year')
-    plt.ylabel('Total time spent in space to date (hours)')
-    plt.tight_layout()
-    plt.savefig(graph_file)
-    plt.show()
-
-
 if __name__ == "__main__":
 
     if len(sys.argv) < 3:
@@ -126,4 +128,5 @@ if __name__ == "__main__":
         print('Using custom input and output filenames')
 
     graph_file = 'results/cumulative_eva_graph.png'
+
     main(input_file, output_file, graph_file)
