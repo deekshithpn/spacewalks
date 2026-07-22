@@ -1,0 +1,18 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Spacewalks
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Deekshith
+    family-names: Ponnana
+    affiliation: UW-Madison
+    email: ponnana@wisc.edu
+repository-code: 'https://github.com/deekshithpn/spacewalks/'
+abstract: Blah blah blah
+keywords:
+  - NASA
